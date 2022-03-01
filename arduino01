@@ -1,0 +1,83 @@
+int pindata=7;//Pin de entrada de datos
+int pinlatch=8;//Pin de segunda etapa de registros(salida)
+int pinclock=9;//Pin de primera entrada de registros (entrada)
+
+void setup()
+{
+  Serial.begin(9600);
+  
+  
+  pinMode(pindata, OUTPUT);
+  pinMode(pinlatch, OUTPUT);
+  pinMode(pinclock, OUTPUT);
+  
+  digitalWrite(pindata,0);
+  digitalWrite(pinlatch,0);
+  digitalWrite(pinclock,0);
+ encender();
+}
+void apagar(){
+   for (int x=0;x<8;x++){//Comprobar 8 leds
+    
+     digitalWrite(pindata,0);delay(100);
+     //
+     digitalWrite(pinclock,0);
+     digitalWrite(pinclock,1);
+     digitalWrite(pinclock,0);
+  	 //
+    digitalWrite(pinlatch,0);
+    digitalWrite(pinlatch,1);
+    digitalWrite(pinlatch,0);
+   }
+}
+void encender(){
+   for (int x=0;x<8;x++){//Comprobar 8 leds
+    
+     digitalWrite(pindata,1);delay(100);
+     //
+     digitalWrite(pinclock,0);
+     digitalWrite(pinclock,1);
+     digitalWrite(pinclock,0);
+  	 //
+    digitalWrite(pinlatch,0);
+    digitalWrite(pinlatch,1);
+    digitalWrite(pinlatch,0);
+   }
+}
+void patron1(){
+  for(int i =0; i<8 ; i++){
+    if(i%2 == 0){
+     digitalWrite(pindata,1);delay(100);
+     //
+     digitalWrite(pinclock,0);
+     digitalWrite(pinclock,1);
+     digitalWrite(pinclock,0);
+  	 //
+    digitalWrite(pinlatch,0);
+    digitalWrite(pinlatch,1);
+    digitalWrite(pinlatch,0);
+      
+    Serial.write("1");
+    delay(3000);
+    }
+    else{
+     digitalWrite(pindata,0);delay(100);
+     //
+     digitalWrite(pinclock,0);
+     digitalWrite(pinclock,1);
+     digitalWrite(pinclock,0);
+  	 //
+     digitalWrite(pinlatch,0);
+     digitalWrite(pinlatch,1);
+     digitalWrite(pinlatch,0);
+     Serial.write("0");
+     delay(3000);
+    }
+  }
+}
+void loop()
+{
+//apagar();
+//encender();
+patron1();
+}
