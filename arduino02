@@ -1,4 +1,7 @@
 #include <LiquidCrystal.h>
+#include <math.h>
+#include <string.h>
+//#include <String.h>
 int RX=0;
 
 // C++ code
@@ -6,35 +9,84 @@ int RX=0;
 //LiquidCrystal lcd(RS, E, D4,D5, D6, D7);
 LiquidCrystal lcd(2,3,4,5,6,7);
 
+int byte_to_int(String byte);
+int enteros[10] = {0,0,0,0,0,0,0,0,0,0};
+int c=0;
+int a=0;
+String byte2="";
+String byte_aux="";
 
 
 void setup()
 {
   Serial.begin(9600);
+  
 } 
 void loop(){ 
         char dato= Serial.read();//Guardamos en la variable dato el valor leido
-        switch(dato){ //Comprobamos el dato
-         case '0':  //Si recibimos una '0' ...
-          Serial.print("0");
-          for(int i=0; i<8; i++){
-               digitalWrite(13,HIGH);
-               delay(80);
-               digitalWrite(13,LOW);
-               delay(80);
-          }
-          break;
-         case '1':    //si recibimos una '1' ...
-         Serial.print("1");
-          for(int i=0; i<8; i++){
-               digitalWrite(13,HIGH);
-               delay(1000);
-               digitalWrite(13,LOW);
-               delay(1000);
-          }
-          break;
-          default:
-           digitalWrite(13,LOW);
-           break;
+  		
+  		switch(dato){ //Comprobamos el dato
+        	case '0':  //Si recibimos una '0' ...
+          		a++;
+          		byte2+="0";
+          		//Serial.print("0");
+          //---------------------------
+          		for (size_t i = 0; i<byte2.length() ; i++){
+        			byte_aux += byte2.charAt(i);
+                    c=0;
+        			if(a == 7){
+                        enteros[c]=byte_to_int(byte_aux);
+                        //Serial.print(byte_to_int(byte_aux));
+
+            			c++;
+                        byte_aux="";
+                      	for (size_t j = 0; j<10 ; j++){
+                        	//Serial.print(enteros[j]);
+                      		}
+                      	a=0;
+                          	
+             			}
+        		}
+            //-----------------------------
+          	break;
+        	case '1':    //si recibimos una '1' ...
+          		a++;
+         		byte2+="1";
+          //---------------------------
+          		for (size_t i = 0; i<byte2.length() ; i++){
+        			byte_aux += byte2.charAt(i);
+                  	c=0;
+        			if(a == 7){
+                        enteros[c]=byte_to_int(byte_aux);
+                        //Serial.print(byte_to_int(byte_aux));
+            			c++;
+                        byte_aux="";
+                      	for (size_t j = 0; j<10 ; j++){
+                        	//Serial.print(enteros[j]);
+                      		}
+                        a=0;
+             			}
+        		}
+            //-----------------------------
+          	break;
+
+        
         }
 }
+
+int byte_to_int(String byte){
+    //Serial.println(byte);
+    int entero=0;
+    int expo= byte.length() -1 ;
+
+    for(unsigned int i = 0; i< byte.length(); i++){
+        if(byte[i] == '1')
+            entero+=pow(2,expo);
+        else
+            entero +=0;
+       expo--;
+    }
+  	Serial.println(entero);
+    return entero;
+}
+
